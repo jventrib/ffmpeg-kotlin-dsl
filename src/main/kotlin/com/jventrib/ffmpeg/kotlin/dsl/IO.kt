@@ -2,18 +2,18 @@ package com.jventrib.ffmpeg.kotlin.dsl
 
 @FFMpegDslMarker
 abstract class IO {
-    private val urls: MutableList<Url> = mutableListOf()
+    protected val urls: MutableList<Url> = mutableListOf()
 
-    fun url(urlS: String, block: (Url.() -> Unit)? = null) {
-        val url = Url(urlS)
-        block?.let { it(url) }
-        urls.add(url)
-    }
+//    open fun url(urlS: String, block: (Url.() -> Unit)? = null) {
+//        val url = getUrl(urlS)
+//        block?.let { it(url) }
+//        urls.add(url)
+//    }
 
-    class Url(private val url: String) {
+    open class Url(private val url: String) {
         private val options: MutableList<Option> = mutableListOf()
 
-        private fun addOption(name: String, value: String) {
+        protected fun addOption(name: String, value: String) {
             options.add(Option(name, value))
         }
 
@@ -45,6 +45,7 @@ abstract class IO {
         fun toString(typeOperator: String): String {
             return options.joinToString("") + typeOperator + url
         }
+
     }
 
 

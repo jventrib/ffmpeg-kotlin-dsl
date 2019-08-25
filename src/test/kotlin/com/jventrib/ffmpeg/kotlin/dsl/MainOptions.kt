@@ -36,7 +36,6 @@ class MainOptions {
         Assertions.assertThat(ffmpeg.toString()).isEqualTo("ffmpeg -i input.avi output.avi -y")
     }
 
-
     @Test
     internal fun doNotOverwriteOption() {
         val ffmpeg = ffmpeg {
@@ -52,6 +51,21 @@ class MainOptions {
         Assertions.assertThat(ffmpeg.toString()).isEqualTo("ffmpeg -i input.avi output.avi -n")
     }
 
+    @Test
+    internal fun streamLoop() {
+        val ffmpeg = ffmpeg {
+            input {
+                url("input.avi") {
+                    loop(3)
+                }
+            }
+            output {
+                url("output.avi")
+            }
+        }
+
+        Assertions.assertThat(ffmpeg.toString()).isEqualTo("ffmpeg -stream_loop 3 -i input.avi output.avi")
+    }
 
 
 }
