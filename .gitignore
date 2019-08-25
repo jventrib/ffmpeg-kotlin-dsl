@@ -222,3 +222,6 @@
 /gradle/wrapper/gradle-wrapper.properties
 /gradlew
 /gradlew.bat
+Supprimerait .gradle/
+Supprimerait build/
+Supprimerait gradle/
