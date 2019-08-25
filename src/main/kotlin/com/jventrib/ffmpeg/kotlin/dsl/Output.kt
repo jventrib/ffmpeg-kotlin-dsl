@@ -9,5 +9,9 @@ class Output : IO() {
         urls.add(url)
     }
 
-    class OutputUrl(urlS: String): Url(urlS)
+    class OutputUrl(urlS: String): Url(urlS) {
+        fun map(stream: Int) {
+            addOption("map", stream.toString())
+        }
+    }
 }

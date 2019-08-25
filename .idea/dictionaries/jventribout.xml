@@ -2,6 +2,7 @@
   <dictionary name="jventribout">
     <words>
       <w>bufsize</w>
+      <w>codec</w>
       <w>ffmpeg</w>
     </words>
   </dictionary>

@@ -4,21 +4,11 @@ package com.jventrib.ffmpeg.kotlin.dsl
 abstract class IO {
     protected val urls: MutableList<Url> = mutableListOf()
 
-//    open fun url(urlS: String, block: (Url.() -> Unit)? = null) {
-//        val url = getUrl(urlS)
-//        block?.let { it(url) }
-//        urls.add(url)
-//    }
-
     open class Url(private val url: String) {
         private val options: MutableList<Option> = mutableListOf()
 
         protected fun addOption(name: String, value: String) {
             options.add(Option(name, value))
-        }
-
-        fun bitRate(block: BitRate.() -> Unit) {
-            BitRate(this).block()
         }
 
         fun bufsize(value: String) {
@@ -36,11 +26,46 @@ abstract class IO {
             addOption("f", fmt)
         }
 
-        class BitRate(private val url: Url) {
+        fun bitRate(block: AV.() -> Unit) {
+            BitRate(this).block()
+        }
+
+        fun codec(value:String? = null, block: AV.() -> Unit) {
+            addAVOption(value, Codec(this), block)
+        }
+
+        private fun addAVOption(value: String?, av: AV, block: AV.() -> Unit) {
+            value?.let {
+                addOption(av.prefix, value)
+            }
+            block(av)
+        }
+
+        open class AV(private val url: Url, internal val prefix: String) {
+            fun audio(value: String) {
+                audio(null, value)
+            }
+
             fun video(value: String) {
-                url.addOption("b:v", value)
+                video(null, value)
+            }
+
+            fun audio(stream: Int? = null, value: String) {
+                av("a", stream, value)
+            }
+
+            fun video(stream: Int? = null, value: String) {
+                av("v", stream, value)
+            }
+
+            private fun av(avType: String, stream: Int?, value: String) {
+                url.addOption("$prefix:$avType${stream?.let { ":$it" } ?: ""}", value)
             }
         }
+
+        class BitRate(url: Url) : AV(url, "b")
+
+        class Codec(url: Url) : AV(url, "c")
 
         fun toString(typeOperator: String): String {
             return options.joinToString("") + typeOperator + url
@@ -54,5 +79,6 @@ abstract class IO {
     override fun toString(): String {
         return urls.joinToString(" ") { it.toString(getTypeOperator()) }
     }
+
 
 }

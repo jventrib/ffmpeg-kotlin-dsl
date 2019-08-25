@@ -38,9 +38,9 @@ class BasicExamples {
         Assertions.assertThat(ffmpeg.toString()).isEqualTo("ffmpeg -i input.avi -r 24 output.avi")
     }
 
-    @Test
-    internal fun `force the frame rate of the input file (valid for raw formats only) to 1 fps and the frame rate of the output file to 24 fps`() {
-        val ffmpeg = ffmpeg {
+        @Test
+        internal fun `force the frame rate of the input file (valid for raw formats only) to 1 fps and the frame rate of the output file to 24 fps`() {
+            val ffmpeg = ffmpeg {
             input {
                 url("input.m2v") {
                     frameRate(1)

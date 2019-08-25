@@ -67,5 +67,47 @@ class MainOptions {
         Assertions.assertThat(ffmpeg.toString()).isEqualTo("ffmpeg -stream_loop 3 -i input.avi output.avi")
     }
 
+    @Test
+    internal fun codec1() {
+        val ffmpeg = ffmpeg {
+            input {
+                url("INPUT") {
+                }
+            }
+            output {
+                url("OUTPUT") {
+                    map(0)
+                    codec {
+                        video("libx264")
+                        audio("copy")
+                    }
+                }
+            }
+        }
+
+        Assertions.assertThat(ffmpeg.toString()).isEqualTo("ffmpeg -i INPUT -map 0 -c:v libx264 -c:a copy OUTPUT")
+    }
+
+    @Test
+    internal fun codec2() {
+        val ffmpeg = ffmpeg {
+            input {
+                url("INPUT") {
+                }
+            }
+            output {
+                url("OUTPUT") {
+                    map(0)
+                    codec("copy") {
+                        video(1, "libx264")
+                        audio(137, "libvorbis")
+                    }
+                }
+            }
+        }
+
+        Assertions.assertThat(ffmpeg.toString()).isEqualTo("ffmpeg -i INPUT -map 0 -c copy -c:v:1 libx264 -c:a:137 libvorbis OUTPUT")
+    }
+
 
 }
