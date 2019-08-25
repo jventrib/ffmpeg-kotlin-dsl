@@ -24,6 +24,10 @@ class FFMpeg {
         addOption("y")
     }
 
+    fun doNotOverwrite() {
+        addOption("n")
+    }
+
     private val options: MutableList<Option> = mutableListOf()
 
     private fun addOption(name: String, value: String? = null) {

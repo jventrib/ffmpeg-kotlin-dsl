@@ -37,5 +37,21 @@ class MainOptions {
     }
 
 
+    @Test
+    internal fun doNotOverwriteOption() {
+        val ffmpeg = ffmpeg {
+            input {
+                url("input.avi")
+            }
+            output {
+                url("output.avi")
+            }
+            doNotOverwrite()
+        }
+
+        Assertions.assertThat(ffmpeg.toString()).isEqualTo("ffmpeg -i input.avi output.avi -n")
+    }
+
+
 
 }
